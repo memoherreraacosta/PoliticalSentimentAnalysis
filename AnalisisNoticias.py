@@ -51,8 +51,7 @@ class TweetAnalyser():
                     "presidente","lopez obrador","ejecutivo","4t",
                     "andrés manuel","andres manuel"]
 
-        trendingTopics = ["venezuela","nestora salgado","morena",
-                          "violencia","minatitlán","mañanera",
+        trendingTopics = ["morena","violencia","minatitlán","mañanera",
                           "minatitlan"]
 
         relevantWords = keyWords + trendingTopics
@@ -74,7 +73,7 @@ class TweetAnalyser():
                       "ayudemos","paz","de primera","aliado","respeto","confianza",
                       "excelente","mejor","crece","sustentable","sana","fortalecido",
                       "bienestar","justicia","celebra","tranquilidad","feliz","prian",
-                      "buen"]
+                      "buen","ahorro","trabajo"]
 
         notFavorveWords = ["ridiculez","violento","violencia","desalmados",
                            "mezquinos","despreciable","carajo","incompetentes","torpe",
@@ -82,7 +81,7 @@ class TweetAnalyser():
                            "lamentable","fracaso","impunidad","secuestrar","secuestros",
                            "asesinado","asesinatos","tortura","patético","criticar",
                            "críticar","compadre","conflicto de interés","dolor","ineptos",
-                           "provocador","inepto"]
+                           "provocador","inepto","vergüenza","inflación"]
 
         posCount = 0
         negCount = 0
@@ -187,7 +186,7 @@ if __name__ == "__main__":
 
         except tweepy.TweepError as err:
             print("La cuenta [ " + fuente + " ] está protegida, saltando cuenta...")
-            print(str(err))
+            #print(str(err))
 
     print("Tweets almacenados correctamente en la carpeta")
     
