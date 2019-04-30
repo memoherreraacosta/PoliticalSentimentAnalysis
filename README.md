@@ -6,7 +6,7 @@ This project consists in make an analysis of the political posture of an account
 
 In the repository we'll see how we :
 
-1. Do the connection to an API to mine tweets of a set of accounts
+1. Do the connection to an API to mine tweets from a set of accounts
 2. Filter those tweets in relevant content
 3. For each tweet ponderate with a value based on how probably is that the tweet has a positive, negative or neutral opinion to the target (Andrés Manuel)
 4. For each account, analize their approval opinion based on the results of their tweets
@@ -49,4 +49,4 @@ Those filtered tweets are stored in [DatosFuentes](DatosFuentes/) for each accou
 
 # Conclusion
 
-We conclude that not all the results are accurate, one of the main problems of the analysis is the sarcasm. Is hard to analyze wether a comment has a positive or negative reference when they write in a sarcastic way. This style can be described as a `Black Swan effect` in the Data Analysis stage.
+We conclude that not all the results are accurate, one of the main problems of the analysis is the sarcasm. Is hard to analyze wether a comment has a positive or negative reference when they write in a sarcastic way. This style can be described as a [Black Swan effect](https://en.wikipedia.org/wiki/Black_swan_theory) in the Data Analysis stage.
