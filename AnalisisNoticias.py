@@ -4,6 +4,7 @@ from tweepy import Cursor
 from tweepy.streaming import StreamListener
 from tweepy import OAuthHandler
 from tweepy import Stream
+from classifier import *
 
 import twitter_credentials
 import numpy as np
@@ -51,17 +52,19 @@ class TweetAnalyser():
                     "presidente","lopez obrador","ejecutivo","4t",
                     "andrés manuel","andres manuel"]
 
-        trendingTopics = ["morena","violencia","minatitlán","mañanera",
-                          "minatitlan"]
+        trendingTopics = ["mañanera", "venezuela","mexico","méxico"]
 
         relevantWords = keyWords + trendingTopics
         text = text.lower()
         isrelevant = False
+        counterWords = 0
 
         for i in relevantWords:
             if(i in text):
-                isrelevant = True
-                break
+                counterWords += 1
+                if(counterWords > 2):
+                    isrelevant = True
+                    break
         
         return isrelevant
     
@@ -69,6 +72,17 @@ class TweetAnalyser():
     # Metodo adoptara una postura en base a palabras clave por tweet    
         texto = texto.lower()
 
+        clf = SentimentClassifier()
+        value = clf.predict(texto)
+
+        if(value > .56):
+            return 1
+        elif(value > .43):
+            return 0
+        else:
+            return -1
+
+        '''
         favorWords = ["igualdad","éxito","exito","gusto","haciendo","fortuna",
                       "ayudemos","paz","de primera","aliado","respeto","confianza",
                       "excelente","mejor","crece","sustentable","sana","fortalecido",
@@ -100,6 +114,7 @@ class TweetAnalyser():
             return -1
         else:
             return 1
+        '''
 
     def posturaFinal(postura):
         # postura is a list
