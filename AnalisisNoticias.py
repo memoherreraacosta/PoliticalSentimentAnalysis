@@ -52,7 +52,7 @@ class TweetAnalyser():
                     "presidente","lopez obrador","ejecutivo","4t",
                     "andrés manuel","andres manuel"]
 
-        trendingTopics = ["mañanera","mexico","méxico",]
+        trendingTopics = ["mañanera","mexico","méxico","@sre_mx","@m_ebrard"]
 
         relevantWords = keyWords + trendingTopics
         text = text.lower()
