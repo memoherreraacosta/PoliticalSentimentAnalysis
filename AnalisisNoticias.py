@@ -75,9 +75,9 @@ class TweetAnalyser():
         clf = SentimentClassifier()
         value = clf.predict(texto)
 
-        if(value > .60):
+        if(value > .50):
             return 1
-        elif(value > .40):
+        elif(value > .30):
             return 0
         else:
             return -1
