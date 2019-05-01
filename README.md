@@ -20,7 +20,7 @@ In the repository we'll see how we :
 - [Tweepy](http://www.tweepy.org/)
 - [pandas](https://pandas.pydata.org/)
 - [numpy](https://www.numpy.org/)
-- [nltk](https://www.nltk.org/), if you have troubles in the instalation, check [this](https://stackoverflow.com/questions/40941761/i-am-having-trouble-downloading-nltks-punkt-tokenizer) solution.
+- [nltk](https://www.nltk.org/), if you have troubles in the instalation, check [this](https://stackoverflow.com/questions/38916452/nltk-download-ssl-certificate-verify-failed) solution.
 - [sklearn](https://scikit-learn.org/stable/)
 - [marisa-trie](https://marisa-trie.readthedocs.io/en/latest/)
 - [scipy](https://www.scipy.org/)
