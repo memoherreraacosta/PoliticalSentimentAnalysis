@@ -157,7 +157,6 @@ class TweetAnalyser():
 
         return df 
 
-
 if __name__ == "__main__":
 
     fileToRead = "fuentes.csv"
@@ -184,11 +183,21 @@ if __name__ == "__main__":
 
     resultado = []
 
+    numFuentes = len(fuentes)
+    funCount = 0
+
     for fuente in fuentes:
         #print(fuente)
         if fuente == "":
             break
+        
+        # Print progress of computing
+        funCount += 1
+        porcCompleted = str(int((funCount/numFuentes)*100))
+        print("Process completed [ "+ porcCompleted +"% ]")
+
         try:
+
             tweets = api.user_timeline(screen_name=fuente, count = 1000)
             df = tweet_analyser.tweets_to_data_frame(tweets)
     
