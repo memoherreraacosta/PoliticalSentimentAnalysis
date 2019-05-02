@@ -61,10 +61,8 @@ class TweetAnalyser():
 
         for i in relevantWords:
             if(i in text):
-                counterWords += 1
-                if(counterWords > 2):
-                    isrelevant = True
-                    break
+                isrelevant = True
+                break
         
         return isrelevant
     
