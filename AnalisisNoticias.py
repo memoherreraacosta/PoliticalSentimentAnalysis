@@ -52,9 +52,9 @@ class TweetAnalyser():
                     "lopez obrador","4t","andrés manuel","andres manuel",
                     "mañanera","conferencia matutina"]
 
-        #trendingTopics = ["mañanera","méxico","mexico","gobierno"]
+        trendingTopics = ["reforma educativa","plan nacional de desarrollo","pnd"]
 
-        relevantWords = keyWords #+ trendingTopics
+        relevantWords = keyWords + trendingTopics
         text = text.lower()
         isrelevant = False
         counterWords = 0
