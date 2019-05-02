@@ -49,12 +49,12 @@ class TweetAnalyser():
 
     def isRelevant(text):
         keyWords = ["amlo", "@lopezobrador_","lópez obrador",
-                    "presidente","lopez obrador","ejecutivo","4t",
-                    "andrés manuel","andres manuel"]
+                    "lopez obrador","4t","andrés manuel","andres manuel",
+                    "mañanera","conferencia matutina"]
 
-        trendingTopics = ["mañanera","mexic","gobierno"]
+        #trendingTopics = ["mañanera","méxico","mexico","gobierno"]
 
-        relevantWords = keyWords + trendingTopics
+        relevantWords = keyWords #+ trendingTopics
         text = text.lower()
         isrelevant = False
         counterWords = 0
