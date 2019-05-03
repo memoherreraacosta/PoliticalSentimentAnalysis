@@ -49,4 +49,4 @@ Those filtered tweets are stored in [DatosFuentes](DatosFuentes/) for each accou
 
 # Conclusion
 
-We conclude that not all the results are accurate, one of the main problems of the analysis is the sarcasm. Is hard to analyze wether a comment has a positive or negative reference when they write in a sarcastic way. This style can be described as a [Black Swan effect](https://en.wikipedia.org/wiki/Black_swan_theory) in the Data Analysis stage.
+We conclude that not all the results are accurate, one of the main problems of the analysis is the sarcasm. Is hard to analyze wether a comment has a positive or negative reference when they write in a sarcastic way. This style can be described as a [Black Swan effect](https://en.wikipedia.org/wiki/Black_swan_theory) in the Data Analysis stage. We also know that the project is in development, so there are methods and implementantions that can be improved so the algorithm can be more accurate when it define a posture.
