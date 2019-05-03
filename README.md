@@ -50,3 +50,36 @@ Those filtered tweets are stored in [DatosFuentes](DatosFuentes/) for each accou
 # Conclusion
 
 We conclude that not all the results are accurate, one of the main problems of the analysis is the sarcasm. Is hard to analyze wether a comment has a positive or negative reference when they write in a sarcastic way. This style can be described as a [Black Swan effect](https://en.wikipedia.org/wiki/Black_swan_theory) in the Data Analysis stage. We also know that the project is in development, so there are methods and implementantions that can be improved so the algorithm can be more accurate when it define a posture.
+
+
+# How to run it ?
+
+* To run the program follow the next steps in your terminal :
+
+1. Be sure to have installed the libraries mentioned in the [Requirements] section in this README file.
+
+2. Download the repository :
+
+`````
+    $ git clone https://github.com/memoherreraacosta/PoliticalSentimentAnalysis.git
+`````
+
+3. Get in the directory PoliticalSentimentAnalysis just downloaded :
+
+`````
+    $ cd PoliticalSentimentAnalysis
+`````
+
+4. To run the Python3 program that does the magic, follow this command :
+
+`````
+    $ python3 AnalisisNoticias.py
+`````
+
+* Remember that you can change the accounts that you want to analize in the [fuentes.csv](fuentes.csv) file follwing the format of linebreak per account. 
+
+* To remove the [resultados.csv](resultados.csv) file from your repository and all the files of the accounts analized in [DatosFuentes](DatosFuentes/) directory, run this command on your terminal being on the `PoliticalSentimentAnalysis` directory: 
+
+`````
+    $ rm resultados.csv && cd DatosFuentes/ && rm *.csv && cd ..
+`````
