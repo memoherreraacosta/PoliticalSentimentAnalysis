@@ -1,9 +1,10 @@
 # !/usr/bin/env python3
-from tweepy.streaming import StreamListener, TweepError
-from classifier import SentimentClassifier
+from tweepy.streaming import StreamListener
+from tweepy import TweepError
+from TwitterClient import TwitterClient
 
+import classifier
 import pandas
-import TwitterClient
 
 ACCOUNTS_FILE = "accounts.csv"
 RESULTS_FILE = "results.csv"
@@ -99,9 +100,8 @@ class TweetAnalyser():
 
 
 def __main__(self):
-    twitterclient = TwitterClient()
-    api = twitterclient.getTwitterClientAPI()    
-
+    twitter_client = TwitterClient()
+    api = twitter_client.getTwitterClientAPI()
     accounts = self.read_file(ACCOUNTS_FILE)
     print("Mining accounts ...")
     results = []
