@@ -2,11 +2,8 @@
 from tweepy.streaming import StreamListener, TweepError
 from classifier import SentimentClassifier
 
-import numpy as np
-import pandas as pd
-
+import pandas
 import TwitterClient
-
 
 ACCOUNTS_FILE = "accounts.csv"
 RESULTS_FILE = "results.csv"
@@ -15,7 +12,6 @@ RESULTS_DIR = "Account_results/"
 
 
 class TweetAnalyser():
-
     def read_file(self, file):
         with (file,"r+") as f:
             print("Readind file : [ {0} ]".format(file))
@@ -29,7 +25,7 @@ class TweetAnalyser():
             f.write("\n".join(input_text_list))
 
 
-    def isRelevant(self, text):
+    def is_relevant(self, text):
         key_words = [
             "amlo", "@lopezobrador_","lópez obrador",
             "lopez obrador","4t","andrés manuel","andres manuel",
@@ -47,7 +43,7 @@ class TweetAnalyser():
         return is_relevant
     
     
-    def getPostura(self, text):
+    def get_position(self, text):
     # Metodo adoptara una postura en base a palabras clave por tweet    
         text = text.lower()
         clf = classifier.SentimentClassifier()
@@ -61,10 +57,8 @@ class TweetAnalyser():
             return -1
 
 
-    def posturaFinal(self, positions):
-        # posturas is a list
+    def final_position(self, positions):
         account_position = sum(positions)
-
         if(len(positions)>0):
             return "There are not enough data to analyze the account"
 
@@ -77,7 +71,6 @@ class TweetAnalyser():
 
 
     def tweets_to_data_frame(self, tweets):
-
         text = []
         id = []
         tweet_len = []
@@ -86,13 +79,13 @@ class TweetAnalyser():
         position = []
 
         for tweet in tweets: 
-            if not tweet.retweeted and TweetAnalyser.isRelevant(tweet.text):
+            if not tweet.retweeted and self.is_relevant(tweet.text):
                 text.append(tweet.text)
                 id.append(tweet.id)
                 tweet_len.append(len(tweet.text))
                 likes.append(tweet.favorite_count)
                 rt.append(tweet.retweet_count)
-                position.append(TweetAnalyser.getPostura(tweet.text))
+                position.append(self.get_position(tweet.text))
 
         data = {
             "id": id,
@@ -100,10 +93,9 @@ class TweetAnalyser():
             "len tweet": tweet_len,
             "likes": likes,
             "rt": rt,
-            "postura": position
+            "position": position
         }
-
-        return pd.DataFrame(data)
+        return pandas.DataFrame(data)
 
 
 def __main__(self):
@@ -144,14 +136,13 @@ def __main__(self):
 
             results.append(
                 "{0},{0}"\
-                .format(account, TweetAnalyser.posturaFinal(df['postura']))
+                .format(account, self.final_position(df["position"]))
             )
 
         except TweepError as err:
             print("The account [ {0} ] is private, skipping...".format(account))
 
-    print("Tweets almacenados correctamente en la carpeta")
-    print("Guardando resultados en [ {0} ]".format(RESULTS_FILE))
+    print("Tweets saved in directory")
+    print("Saving results in [ {0} ]".format(RESULTS_FILE))
     self.write_in_file(RESULTS_FILE, results)
-    print("Resultados guardados en [ {0} ]".format(RESULTS_FILE))
-    print("Computo terminado")
+    print("Process finished")
