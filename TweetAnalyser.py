@@ -7,7 +7,7 @@ from textblob import TextBlob
 import re
 import pandas
 
-TOPICO = "xbox"
+TOPICO = "politica"
 PARENT_DIR = "DatosFuentes/"
 ACCOUNTS_FILE = PARENT_DIR + "accounts/accounts_{0}.csv".format(TOPICO)
 RESULTS_FILE = PARENT_DIR + "results/results_{0}.csv".format(TOPICO)
