@@ -2,70 +2,70 @@
 from tweepy.streaming import StreamListener
 from tweepy import TweepError
 from TwitterClient import TwitterClient
+from textblob import TextBlob
 
-import classifier
 import pandas
 
 ACCOUNTS_FILE = "accounts.csv"
 RESULTS_FILE = "results.csv"
-RESULTS_DIR = "Account_results/"
+RESULTS_DIR = "DatosFuentes/"
 
 
 
 class TweetAnalyser():
-    def read_file(self, file):
-        with (file,"r+") as f:
-            print("Readind file : [ {0} ]".format(file))
+    def read_file(self):
+        with open(ACCOUNTS_FILE, "r") as f:
+            print("Readind file : [ {0} ]".format(ACCOUNTS_FILE))
             content = f.read()
-            print("File : [ {0} ] is read".format(file))
+            print("File : [ {0} ] is read".format(ACCOUNTS_FILE))
             return content.splitlines()
 
 
-    def write_in_file(self, file_to_write, input_text_list):
-        with (file_to_write, "w+") as f:
+    def write_in_file(self, input_text_list):
+        with open(RESULTS_FILE, "w") as f:
             f.write("\n".join(input_text_list))
 
 
     def is_relevant(self, text):
         key_words = [
-            "amlo", "@lopezobrador_","lópez obrador",
-            "lopez obrador","4t","andrés manuel","andres manuel",
+            "amlo",
+            "@lopezobrador_",
+            "lópez obrador",
+            "lopez obrador",
+            "4t",
+            "andrés manuel",
+            "andres manuel",
         ]
 
         text = text.lower()
-        is_relevant = False
-        counterWords = 0
+        return any(
+            key_word
+            for key_word in key_words
+            if key_word in text
+        )
 
-        for key_word in key_words:
-            if key_word in text:
-                is_relevant = True
-                break
-
-        return is_relevant
-    
     
     def get_position(self, text):
     # Metodo adoptara una postura en base a palabras clave por tweet    
         text = text.lower()
-        clf = classifier.SentimentClassifier()
-        value = clf.predict(text)
+        value = TextBlob(text).sentiment.polarity
 
-        if(value > .45):
+        if value > .15:
             return 1
-        elif(value > .3):
-            return 0
-        else:
+        elif value < -.15 :
             return -1
+        else:
+            return 0
 
 
     def final_position(self, positions):
-        account_position = sum(positions)
-        if(len(positions)>0):
+        if len(positions) == 0:
             return "There are not enough data to analyze the account"
 
-        if(sum > 0):
+        account_position = sum(positions)/len(positions)
+        if account_position > .15 :
             return "Follower"
-        elif(sum < 0):
+        elif account_position < -.15:
             return "Opposition"
         else:
             return "Neutral"
@@ -99,50 +99,52 @@ class TweetAnalyser():
         return pandas.DataFrame(data)
 
 
-def __main__(self):
-    twitter_client = TwitterClient()
-    api = twitter_client.getTwitterClientAPI()
-    accounts = self.read_file(ACCOUNTS_FILE)
-    print("Mining accounts ...")
-    results = []
-    num_accounts = len(accounts)
-    accounts_counter = 0
+    def main(self):
+        twitter_client = TwitterClient()
+        api = twitter_client.getTwitterClientAPI()
+        accounts = self.read_file()
+        print("Mining accounts ...")
+        results = []
+        num_accounts = len(accounts)
+        accounts_counter = 0
 
-    for account in accounts:
-        print("Computing account ={0}\n".format(account))
-        if account == "":
-            break
-        # Print progress of computing
-        accounts_counter += 1
-        procces_completed = str(int((accounts_counter/num_accounts)*100))
-        print(
-            "Process completed [ {0}% ] for account '{0}'"\
-            .format(procces_completed,accounts)
-        )
-
-        try:
-            tweets = api.user_timeline(
-                screen_name=account,
-                count = 1000
+        for account in accounts:
+            print("Computing account ={0}\n".format(account))
+            if account == "":
+                break
+            # Print progress of computing
+            accounts_counter += 1
+            procces_completed = str(int((accounts_counter/num_accounts)*100))
+            print(
+                "Process completed [ {0}% ] for account '{1}'"\
+                .format(procces_completed, account)
             )
 
-            df = self.tweets_to_data_frame(tweets)
-            account_result_file = "{0}{0}.csv".format(RESULTS_DIR, account)
-            df.to_csv(
-                account_result_file,
-                encoding='utf-8',
-                index=False
-            )
+            try:
+                tweets = api.user_timeline(
+                    screen_name=account,
+                    count = 1000
+                )
 
-            results.append(
-                "{0},{0}"\
-                .format(account, self.final_position(df["position"]))
-            )
+                df = self.tweets_to_data_frame(tweets)
+                account_result_file = "{0}{1}.csv".format(RESULTS_DIR, account)
+                df.to_csv(
+                    account_result_file,
+                    encoding='utf-8',
+                    index=False
+                )
 
-        except TweepError as err:
-            print("The account [ {0} ] is private, skipping...".format(account))
+                results.append("{0},{1}".format(account, self.final_position(df["position"])))
 
-    print("Tweets saved in directory")
-    print("Saving results in [ {0} ]".format(RESULTS_FILE))
-    self.write_in_file(RESULTS_FILE, results)
-    print("Process finished")
+            except TweepError as err:
+                print("The account [ {0} ] is private, skipping...".format(account))
+
+        print("Tweets saved in directory")
+        print("Saving results in [ {0} ]".format(RESULTS_FILE))
+        self.write_in_file(results)
+        print("Process finished")
+
+
+
+if __name__ == '__main__':
+    TweetAnalyser().main()
