@@ -8,6 +8,7 @@ import re
 import pandas
 
 TOPICO = "politica"
+# Topics used: 'politica', 'xbox', 'ps'
 PARENT_DIR = "DatosFuentes/"
 ACCOUNTS_FILE = PARENT_DIR + "accounts/accounts_{0}.csv".format(TOPICO)
 RESULTS_FILE = PARENT_DIR + "results/results_{0}.csv".format(TOPICO)
@@ -75,7 +76,7 @@ class TweetAnalyser():
     
     def get_position(self, text):
         # Avoid sentiment returning 0
-        return 0
+        # return 0
         text = text.lower()
 
         if TOPICO == "politica":
