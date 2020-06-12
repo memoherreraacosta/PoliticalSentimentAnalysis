@@ -2,14 +2,22 @@
 from tweepy import TweepError
 from TwitterClient import TwitterClient
 from classifier import SentimentClassifier
+from textblob import TextBlob
 
 import re
 import pandas
 
-ACCOUNTS_FILE = "accounts_politica.csv"
-RESULTS_FILE = "results_politica.csv"
-RESULTS_DIR = "DatosFuentes/Politica/"
-KEY_WORDS = [
+TOPICO = "tech"
+ACCOUNTS_FILE = "accounts_{0}.csv".format(TOPICO)
+RESULTS_FILE = "results_{0}.csv".format(TOPICO)
+RESULTS_DIR = "DatosFuentes/{0}/".format(TOPICO)
+KEY_WORDS_TECH = [
+    "ps5",
+    "playstation",
+    "play station"
+    "sony"
+]
+KEY_WORDS_POLITICA = [
     "amlo",
     "@lopezobrador_",
     "lópez obrador",
@@ -18,6 +26,7 @@ KEY_WORDS = [
     "andrés manuel",
     "andres manuel",
 ]
+KEY_WORDS = KEY_WORDS_POLITICA if TOPICO == "politica" else KEY_WORDS_TECH
 
 
 
@@ -57,9 +66,14 @@ class TweetAnalyser():
         # Avoid sentiment returning 0
         return 0
         text = text.lower()
-        text = re.sub(r'^https?:\/\/.*[\r\n]*', '', text, flags=re.MULTILINE)
-        clf = SentimentClassifier()
-        value = clf.predict(text)
+
+        if TOPICO == "politica":
+            text = re.sub(r'^https?:\/\/.*[\r\n]*', '', text, flags=re.MULTILINE)
+            clf = SentimentClassifier()
+            value = clf.predict(text)
+        else:
+            analysis = TextBlob(text)
+            value = analysis.sentiment.polarity
 
         if value > .55:
             return 1
