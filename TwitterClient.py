@@ -1,12 +1,12 @@
 # !/usr/bin/env python3
 import credentials
 import tweepy #https://github.com/tweepy/tweepy
-
+from tweepy.auth import OAuthHandler
 
 
 class TwitterClient():
     def __init__(self, twitter_user=None):
-        auth = tweepy.OAuthHandler(
+        self.auth = OAuthHandler(
             credentials.CONSUMER_KEY,
             credentials.CONSUMER_SECRET
         )
@@ -14,8 +14,9 @@ class TwitterClient():
         self.auth.set_access_token(
             credentials.ACCESS_TOKEN,
             credentials.ACCESS_TOKEN_SECRET
-        ).Authenticate_Twitter_app()
-
+        )
+        
+        #self.auth.Authenticate_Twitter_app()
         self.twitter_client = tweepy.API(self.auth)
         self.twitter_user = twitter_user
 
