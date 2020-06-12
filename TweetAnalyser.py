@@ -3,11 +3,12 @@ from tweepy import TweepError
 from TwitterClient import TwitterClient
 from classifier import SentimentClassifier
 
+import re
 import pandas
 
-ACCOUNTS_FILE = "accounts.csv"
-RESULTS_FILE = "results.csv"
-RESULTS_DIR = "DatosFuentes/"
+ACCOUNTS_FILE = "accounts_politica.csv"
+RESULTS_FILE = "results_politica.csv"
+RESULTS_DIR = "DatosFuentes/Politica/"
 KEY_WORDS = [
     "amlo",
     "@lopezobrador_",
@@ -52,11 +53,11 @@ class TweetAnalyser():
         )
 
     
-    def get_position(self, text): 
-        text = text.lower()
-        text = text.split("http")[0]
+    def get_position(self, text):
+        # Avoid sentiment returning 0
         return 0
-        """
+        text = text.lower()
+        text = re.sub(r'^https?:\/\/.*[\r\n]*', '', text, flags=re.MULTILINE)
         clf = SentimentClassifier()
         value = clf.predict(text)
 
@@ -66,7 +67,6 @@ class TweetAnalyser():
             return -1
         else:
             return 0
-        """
 
 
     def final_position(self, positions):
@@ -92,7 +92,7 @@ class TweetAnalyser():
 
         for tweet in tweets: 
             if not tweet.retweeted and self.is_relevant(tweet.text):
-                text.append(tweet.text.split("http")[0])
+                text.append(re.sub(r'^https?:\/\/.*[\r\n]*', '', tweet.text, flags=re.MULTILINE))
                 id.append(tweet.id)
                 tweet_len.append(len(tweet.text))
                 likes.append(tweet.favorite_count)
