@@ -2,13 +2,22 @@
 from tweepy import TweepError
 from TwitterClient import TwitterClient
 from classifier import SentimentClassifier
+from textblob import TextBlob
 
+import re
 import pandas
 
-ACCOUNTS_FILE = "accounts.csv"
-RESULTS_FILE = "results.csv"
-RESULTS_DIR = "DatosFuentes/"
-KEY_WORDS = [
+TOPICO = "tech"
+ACCOUNTS_FILE = "accounts_{0}.csv".format(TOPICO)
+RESULTS_FILE = "results_{0}.csv".format(TOPICO)
+RESULTS_DIR = "DatosFuentes/{0}/".format(TOPICO)
+KEY_WORDS_TECH = [
+    "ps5",
+    "playstation",
+    "play station"
+    "sony"
+]
+KEY_WORDS_POLITICA = [
     "amlo",
     "@lopezobrador_",
     "lópez obrador",
@@ -17,6 +26,7 @@ KEY_WORDS = [
     "andrés manuel",
     "andres manuel",
 ]
+KEY_WORDS = KEY_WORDS_POLITICA if TOPICO == "politica" else KEY_WORDS_TECH
 
 
 
@@ -52,13 +62,18 @@ class TweetAnalyser():
         )
 
     
-    def get_position(self, text): 
-        text = text.lower()
-        text = text.split("http")[0]
+    def get_position(self, text):
+        # Avoid sentiment returning 0
         return 0
-        """
-        clf = SentimentClassifier()
-        value = clf.predict(text)
+        text = text.lower()
+
+        if TOPICO == "politica":
+            text = re.sub(r'^https?:\/\/.*[\r\n]*', '', text, flags=re.MULTILINE)
+            clf = SentimentClassifier()
+            value = clf.predict(text)
+        else:
+            analysis = TextBlob(text)
+            value = analysis.sentiment.polarity
 
         if value > .55:
             return 1
@@ -66,7 +81,6 @@ class TweetAnalyser():
             return -1
         else:
             return 0
-        """
 
 
     def final_position(self, positions):
@@ -92,7 +106,7 @@ class TweetAnalyser():
 
         for tweet in tweets: 
             if not tweet.retweeted and self.is_relevant(tweet.text):
-                text.append(tweet.text.split("http")[0])
+                text.append(re.sub(r'^https?:\/\/.*[\r\n]*', '', tweet.text, flags=re.MULTILINE))
                 id.append(tweet.id)
                 tweet_len.append(len(tweet.text))
                 likes.append(tweet.favorite_count)
