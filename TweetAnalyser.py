@@ -7,15 +7,22 @@ from textblob import TextBlob
 import re
 import pandas
 
-TOPICO = "tech"
-ACCOUNTS_FILE = "accounts_{0}.csv".format(TOPICO)
-RESULTS_FILE = "results_{0}.csv".format(TOPICO)
-RESULTS_DIR = "DatosFuentes/{0}/".format(TOPICO)
-KEY_WORDS_TECH = [
+TOPICO = ""
+PARENT_DIR = "DatosFuentes/"
+ACCOUNTS_FILE = PARENT_DIR + "accounts/accounts_{0}.csv".format(TOPICO)
+RESULTS_FILE = PARENT_DIR + "results/results_{0}.csv".format(TOPICO)
+RESULTS_DIR = PARENT_DIR + TOPICO + "/"
+KEY_WORDS_PS = [
     "ps5",
     "playstation",
     "play station"
     "sony"
+]
+KEY_WORDS_XBOX = [
+    "xbox",
+    "xbox x",
+    "xbox series x"
+    "microsoft"
 ]
 KEY_WORDS_POLITICA = [
     "amlo",
@@ -26,7 +33,11 @@ KEY_WORDS_POLITICA = [
     "andrés manuel",
     "andres manuel",
 ]
-KEY_WORDS = KEY_WORDS_POLITICA if TOPICO == "politica" else KEY_WORDS_TECH
+KEY_WORDS = {
+    "politica": KEY_WORDS_POLITICA,
+    "ps": KEY_WORDS_PS,
+    "xbox": KEY_WORDS_XBOX
+}[TOPICO]
 
 
 
